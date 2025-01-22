@@ -84,7 +84,6 @@ public static class FluentValidationMvcExtensions {
 
 		if (config.AutomaticValidationEnabled) {
 			services.AddFluentValidationAutoValidation(cfg => {
-				cfg.DisableDataAnnotationsValidation = config.DisableDataAnnotationsValidation;
 			});
 		}
 
@@ -109,7 +108,7 @@ public static class FluentValidationMvcExtensions {
 		services.Add(ServiceDescriptor.Singleton<IObjectModelValidator, FluentValidationObjectModelValidator>(s => {
 			var options = s.GetRequiredService<IOptions<MvcOptions>>().Value;
 			var metadataProvider = s.GetRequiredService<IModelMetadataProvider>();
-			return new FluentValidationObjectModelValidator(metadataProvider, options.ModelValidatorProviders, !config.DisableDataAnnotationsValidation);
+			return new FluentValidationObjectModelValidator(metadataProvider, options.ModelValidatorProviders, true);
 		}));
 
 		services.Configure<MvcOptions>(options => {

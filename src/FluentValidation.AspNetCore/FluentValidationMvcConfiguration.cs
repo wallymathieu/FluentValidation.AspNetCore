@@ -28,14 +28,6 @@ using Microsoft.Extensions.DependencyInjection;
 /// </summary>
 public class FluentValidationAutoValidationConfiguration {
 
-
-	/// <summary>
-	/// By default Data Annotations validation will also run as well as FluentValidation.
-	/// Setting this to true will disable DataAnnotations and only run FluentValidation.
-	/// </summary>
-	public bool DisableDataAnnotationsValidation { get; set; }
-
-
 	/// <summary>
 	/// When specified, automatic validation will only apply to the types matched by the filter.
 	/// If the filter does not match, automatic validation will not be applied.  This can be useful
@@ -70,15 +62,6 @@ public class FluentValidationMvcConfiguration : FluentValidationAutoValidationCo
 	/// </summary>
 	[Obsolete("Global options should be set using the static ValidatorOptions.Global instead.")]
 	public ValidatorConfiguration ValidatorOptions { get; private set; }
-
-	/// <summary>
-	/// Enables or disables localization support within FluentValidation
-	/// </summary>
-	[Obsolete("Set the static ValidatorOptions.Global.LanguageManager.Enabled property instead.")]
-	public bool LocalizationEnabled {
-		get => ValidatorOptions.LanguageManager.Enabled;
-		set => ValidatorOptions.LanguageManager.Enabled = value;
-	}
 
 	/// <summary>
 	/// Whether automatic server-side validation should be enabled (default true).
