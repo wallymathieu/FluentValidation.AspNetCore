@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <VersionPrefix>11.3.0</VersionPrefix>
     <AssemblyName>FluentValidation.AspNetCore</AssemblyName>
     <PackageId>FluentValidation.AspNetCore</PackageId>
@@ -17,7 +17,7 @@ Full release notes can be found at https://github.com/FluentValidation/FluentVal
     <DebugType>embedded</DebugType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Authors>Jeremy Skinner</Authors>
-    <LangVersion>10</LangVersion>
+    <!--<LangVersion>10</LangVersion>-->
     <NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PackageProjectUrl>https://fluentvalidation.net</PackageProjectUrl>
