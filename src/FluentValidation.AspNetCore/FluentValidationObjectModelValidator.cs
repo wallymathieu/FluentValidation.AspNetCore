@@ -25,20 +25,15 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 internal class FluentValidationObjectModelValidator : ObjectModelValidator {
-	private readonly bool _runMvcValidation;
-	private readonly FluentValidationModelValidatorProvider _fvProvider;
-
 	public FluentValidationObjectModelValidator(
 		IModelMetadataProvider modelMetadataProvider,
-		IList<IModelValidatorProvider> validatorProviders, bool runMvcValidation)
+		IList<IModelValidatorProvider> validatorProviders)
 		: base(modelMetadataProvider, validatorProviders) {
-		_runMvcValidation = runMvcValidation;
-		_fvProvider = validatorProviders.SingleOrDefault(x => x is FluentValidationModelValidatorProvider) as FluentValidationModelValidatorProvider;
 	}
 
 	public override ValidationVisitor GetValidationVisitor(ActionContext actionContext, IModelValidatorProvider validatorProvider, ValidatorCache validatorCache, IModelMetadataProvider metadataProvider, ValidationStateDictionary validationState) {
 		// Setting as to whether we should run only FV or FV + the other validator providers
-		var validatorProviderToUse = _runMvcValidation ? validatorProvider : _fvProvider;
+		var validatorProviderToUse = validatorProvider;
 
 		var visitor = new FluentValidationVisitor(
 			actionContext,

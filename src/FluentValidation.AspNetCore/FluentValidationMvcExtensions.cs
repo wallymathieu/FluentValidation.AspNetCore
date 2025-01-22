@@ -108,7 +108,7 @@ public static class FluentValidationMvcExtensions {
 		services.Add(ServiceDescriptor.Singleton<IObjectModelValidator, FluentValidationObjectModelValidator>(s => {
 			var options = s.GetRequiredService<IOptions<MvcOptions>>().Value;
 			var metadataProvider = s.GetRequiredService<IModelMetadataProvider>();
-			return new FluentValidationObjectModelValidator(metadataProvider, options.ModelValidatorProviders, true);
+			return new FluentValidationObjectModelValidator(metadataProvider, options.ModelValidatorProviders);
 		}));
 
 		services.Configure<MvcOptions>(options => {
@@ -123,8 +123,6 @@ public static class FluentValidationMvcExtensions {
 
 			if (!options.ModelValidatorProviders.Any(x => x is FluentValidationModelValidatorProvider)) {
 				options.ModelValidatorProviders.Insert(0, new FluentValidationModelValidatorProvider(
-					implicitValidationEnabled: false,
-					implicitRootCollectionElementValidationEnabled: false,
 					filter: config.Filter));
 			}
 		});

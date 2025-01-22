@@ -35,33 +35,17 @@ using Results;
 /// ModelValidatorProvider implementation only used for child properties.
 /// </summary>
 public class FluentValidationModelValidatorProvider : IModelValidatorProvider {
-	private readonly bool _implicitValidationEnabled;
-	private readonly bool _implicitRootCollectionElementValidationEnabled;
 	private readonly Func<Type, bool> _filter;
 
-	public FluentValidationModelValidatorProvider(bool implicitValidationEnabled)
-		: this(implicitValidationEnabled, false, default) {
-	}
-
 	public FluentValidationModelValidatorProvider(
-		bool implicitValidationEnabled,
-		bool implicitRootCollectionElementValidationEnabled)
-		: this(implicitValidationEnabled, implicitRootCollectionElementValidationEnabled, default) {
-	}
-
-	public FluentValidationModelValidatorProvider(
-		bool implicitValidationEnabled,
-		bool implicitRootCollectionElementValidationEnabled,
 		Func<Type, bool> filter) {
-		_implicitValidationEnabled = implicitValidationEnabled;
-		_implicitRootCollectionElementValidationEnabled = implicitRootCollectionElementValidationEnabled;
 		_filter = filter;
 	}
 
 	public virtual void CreateValidators(ModelValidatorProviderContext context) {
 		context.Results.Add(new ValidatorItem {
 			IsReusable = false,
-			Validator = new FluentValidationModelValidator(_implicitValidationEnabled, _implicitRootCollectionElementValidationEnabled, _filter),
+			Validator = new FluentValidationModelValidator(_filter),
 		});
 	}
 }
@@ -70,26 +54,11 @@ public class FluentValidationModelValidatorProvider : IModelValidatorProvider {
 /// FluentValidation's implementation of an ASP.NET Core model validator.
 /// </summary>
 public class FluentValidationModelValidator : IModelValidator {
-	private readonly bool _implicitValidationEnabled;
-	private readonly bool _implicitRootCollectionElementValidationEnabled;
 	private readonly Func<Type, bool> _filter;
 
-	public FluentValidationModelValidator(bool implicitValidationEnabled)
-		: this(implicitValidationEnabled, false, default) {
-	}
 
 	public FluentValidationModelValidator(
-		bool implicitValidationEnabled,
-		bool implicitRootCollectionElementValidationEnabled)
-		: this(implicitValidationEnabled, implicitRootCollectionElementValidationEnabled, default) {
-	}
-
-	public FluentValidationModelValidator(
-		bool implicitValidationEnabled,
-		bool implicitRootCollectionElementValidationEnabled,
 		Func<Type, bool> filter) {
-		_implicitValidationEnabled = implicitValidationEnabled;
-		_implicitRootCollectionElementValidationEnabled = implicitRootCollectionElementValidationEnabled;
 		_filter = filter;
 	}
 
@@ -170,7 +139,7 @@ public class FluentValidationModelValidator : IModelValidator {
 		}
 
 		// If implicit validation is disabled, then we want to only validate the root object.
-		if (!_implicitValidationEnabled) {
+		if (!false) {
 			var rootMetadata = GetRootMetadata(mvContext);
 
 			// We should always have root metadata, so this should never happen...
@@ -200,7 +169,7 @@ public class FluentValidationModelValidator : IModelValidator {
 			else if (modelMetadata.MetadataKind == ModelMetadataKind.Type) {
 				// If implicit validation of root collection elements is enabled then we
 				// do want to validate the type if it matches the element type of the root collection
-				if (_implicitRootCollectionElementValidationEnabled && IsRootCollectionElementType(rootMetadata, modelMetadata.ModelType)) {
+				if (false && IsRootCollectionElementType(rootMetadata, modelMetadata.ModelType)) {
 					return false;
 				}
 
