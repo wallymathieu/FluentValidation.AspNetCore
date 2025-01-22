@@ -85,10 +85,6 @@ public static class FluentValidationMvcExtensions {
 		if (config.AutomaticValidationEnabled) {
 			services.AddFluentValidationAutoValidation(cfg => {
 				cfg.DisableDataAnnotationsValidation = config.DisableDataAnnotationsValidation;
-				cfg.ImplicitlyValidateChildProperties = config.ImplicitlyValidateChildProperties;
-				cfg.ImplicitlyValidateRootCollectionElements = config.ImplicitlyValidateRootCollectionElements;
-				cfg.ValidatorFactory = config.ValidatorFactory;
-				cfg.ValidatorFactoryType = config.ValidatorFactoryType;
 			});
 		}
 
@@ -107,14 +103,8 @@ public static class FluentValidationMvcExtensions {
 
 		services.TryAddSingleton(ValidatorOptions.Global);
 
-		if (config.ValidatorFactory != null) {
-			// Allow user to register their own IValidatorFactory instance, before falling back to try resolving by Type.
-			var factory = config.ValidatorFactory;
-			services.Add(ServiceDescriptor.Scoped(s => factory));
-		}
-		else {
-			services.Add(ServiceDescriptor.Scoped(typeof(IValidatorFactory), config.ValidatorFactoryType ?? typeof(ServiceProviderValidatorFactory)));
-		}
+		services.Add(ServiceDescriptor.Scoped(typeof(IValidatorFactory), typeof(ServiceProviderValidatorFactory)));
+		
 
 		services.Add(ServiceDescriptor.Singleton<IObjectModelValidator, FluentValidationObjectModelValidator>(s => {
 			var options = s.GetRequiredService<IOptions<MvcOptions>>().Value;
@@ -134,9 +124,9 @@ public static class FluentValidationMvcExtensions {
 
 			if (!options.ModelValidatorProviders.Any(x => x is FluentValidationModelValidatorProvider)) {
 				options.ModelValidatorProviders.Insert(0, new FluentValidationModelValidatorProvider(
-					config.ImplicitlyValidateChildProperties,
-					config.ImplicitlyValidateRootCollectionElements,
-					config.Filter));
+					implicitValidationEnabled: false,
+					implicitRootCollectionElementValidationEnabled: false,
+					filter: config.Filter));
 			}
 		});
 

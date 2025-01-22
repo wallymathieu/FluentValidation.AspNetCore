@@ -28,32 +28,6 @@ using Microsoft.Extensions.DependencyInjection;
 /// </summary>
 public class FluentValidationAutoValidationConfiguration {
 
-	/// <summary>
-	/// Whether or not child properties should be implicitly validated if a matching validator can be found. By default this is false, and you should wire up child validators using SetValidator.
-	/// </summary>
-	[Obsolete("Implicit validation of child properties deprecated and will be removed in a future release. Please use SetValidator instead. For details see https://github.com/FluentValidation/FluentValidation/issues/1960")]
-	public bool ImplicitlyValidateChildProperties { get; set; }
-
-	/// <summary>
-	/// Gets or sets a value indicating whether the elements of a root model should be implicitly validated when
-	/// the root model is a collection type and a matching validator can be found for the element type.
-	/// By default this is <see langword="false"/>, and you will need to create a validator for the collection type
-	/// (unless <see cref="ImplicitlyValidateChildProperties"/> is <see langword="true"/>.
-	/// </summary>
-	[Obsolete("Implicit validation of root collection elements is deprecated and will be removed in a future release. Please use an explicit collection validator instead. For details see https://github.com/FluentValidation/FluentValidation/issues/1960")]
-	public bool ImplicitlyValidateRootCollectionElements { get; set; }
-
-	/// <summary>
-	/// The type of validator factory to use. Uses the ServiceProviderValidatorFactory by default.
-	/// </summary>
-	[Obsolete("IValidatorFactory and its implementors are deprecated. Please use the Service Provider directly. For details see https://github.com/FluentValidation/FluentValidation/issues/1961")]
-	public Type ValidatorFactoryType { get; set; }
-
-	/// <summary>
-	/// The validator factory to use. Uses the ServiceProviderValidatorFactory by default.
-	/// </summary>
-	[Obsolete("IValidatorFactory and its implementors are deprecated. Please use the Service Provider directly. For details see https://github.com/FluentValidation/FluentValidation/issues/1961")]
-	public IValidatorFactory ValidatorFactory { get; set; }
 
 	/// <summary>
 	/// By default Data Annotations validation will also run as well as FluentValidation.
@@ -145,9 +119,6 @@ public class FluentValidationMvcConfiguration : FluentValidationAutoValidationCo
 	public FluentValidationMvcConfiguration RegisterValidatorsFromAssembly(Assembly assembly, Func<AssemblyScanner.AssemblyScanResult, bool> filter = null, ServiceLifetime lifetime = ServiceLifetime.Scoped, bool includeInternalTypes = false) {
 		_services.AddValidatorsFromAssembly(assembly, lifetime, filter, includeInternalTypes);
 
-#pragma warning disable CS0618
-		ValidatorFactoryType = typeof(ServiceProviderValidatorFactory);
-#pragma warning restore CS0618
 		return this;
 	}
 
@@ -162,9 +133,6 @@ public class FluentValidationMvcConfiguration : FluentValidationAutoValidationCo
 	public FluentValidationMvcConfiguration RegisterValidatorsFromAssemblies(IEnumerable<Assembly> assemblies, Func<AssemblyScanner.AssemblyScanResult, bool> filter = null, ServiceLifetime lifetime = ServiceLifetime.Scoped, bool includeInternalTypes = false) {
 		_services.AddValidatorsFromAssemblies(assemblies, lifetime, filter, includeInternalTypes);
 
-#pragma warning disable CS0618
-		ValidatorFactoryType = typeof(ServiceProviderValidatorFactory);
-#pragma warning restore CS0618
 		return this;
 	}
 
