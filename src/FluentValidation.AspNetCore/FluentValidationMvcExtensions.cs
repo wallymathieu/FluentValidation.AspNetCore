@@ -92,10 +92,6 @@ public static class FluentValidationMvcExtensions {
 			});
 		}
 
-		if (config.ClientsideEnabled) {
-			services.AddFluentValidationClientsideAdapters(config.ClientsideConfig);
-		}
-
 		return services;
 	}
 
@@ -149,40 +145,5 @@ public static class FluentValidationMvcExtensions {
 
 #pragma warning restore CS0618
 
-	/// <summary>
-	/// Enables integration between FluentValidation and ASP.NET client-side validation. See <see href="https://docs.fluentvalidation.net/en/latest/aspnet.html#clientside-validation"/> for details.
-	/// </summary>
-	/// <param name="services">Service collection</param>
-	/// <param name="configuration">Configuration expression</param>
-	/// <returns></returns>
-	public static IServiceCollection AddFluentValidationClientsideAdapters(this IServiceCollection services, Action<FluentValidationClientModelValidatorProvider> configuration = null) {
-		services.AddHttpContextAccessor();
-		services.TryAddSingleton(ValidatorOptions.Global);
-
-#pragma warning disable CS0618
-		services.TryAddScoped<IValidatorFactory, ServiceProviderValidatorFactory>();
-#pragma warning restore CS0618
-
-		services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<MvcViewOptions>, FluentValidationViewOptionsSetup>(s => {
-			return new FluentValidationViewOptionsSetup(configuration, s.GetService<IHttpContextAccessor>());
-		}));
-
-		return services;
-	}
 }
 
-internal class FluentValidationViewOptionsSetup : IConfigureOptions<MvcViewOptions> {
-	private readonly Action<FluentValidationClientModelValidatorProvider> _action;
-	private readonly IHttpContextAccessor _httpContextAccessor;
-
-	public FluentValidationViewOptionsSetup(Action<FluentValidationClientModelValidatorProvider> action, IHttpContextAccessor httpContextAccessor) {
-		_action = action;
-		_httpContextAccessor = httpContextAccessor;
-	}
-
-	public void Configure(MvcViewOptions options) {
-		var provider = new FluentValidationClientModelValidatorProvider(_httpContextAccessor);
-		_action?.Invoke(provider);
-		options.ClientModelValidatorProviders.Add(provider);
-	}
-}

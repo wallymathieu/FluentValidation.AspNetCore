@@ -106,9 +106,6 @@ public class FluentValidationMvcConfiguration : FluentValidationAutoValidationCo
 		set => ValidatorOptions.LanguageManager.Enabled = value;
 	}
 
-	internal bool ClientsideEnabled = true;
-	internal Action<FluentValidationClientModelValidatorProvider> ClientsideConfig = x => {};
-
 	/// <summary>
 	/// Whether automatic server-side validation should be enabled (default true).
 	/// </summary>
@@ -171,18 +168,4 @@ public class FluentValidationMvcConfiguration : FluentValidationAutoValidationCo
 		return this;
 	}
 
-	/// <summary>
-	/// Configures clientside validation support
-	/// </summary>
-	/// <param name="clientsideConfig"></param>
-	/// <param name="enabled">Whether clientside validation integration is enabled</param>
-	/// <returns></returns>
-	[Obsolete("ConfigureClientsideValidation is deprecated and will be removed in a future release. To configure client-side validation call services.AddFluentValidationClientsideAdapters(config => ...) instead. For details see https://github.com/FluentValidation/FluentValidation/issues/1965")]
-	public FluentValidationMvcConfiguration ConfigureClientsideValidation(Action<FluentValidationClientModelValidatorProvider> clientsideConfig=null, bool enabled=true) {
-		if (clientsideConfig != null) {
-			ClientsideConfig = clientsideConfig;
-		}
-		ClientsideEnabled = enabled;
-		return this;
-	}
 }

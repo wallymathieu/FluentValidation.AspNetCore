@@ -23,7 +23,6 @@ public class DependencyInjectionTests : IClassFixture<WebAppFixture> {
 		_client = webApp.WithWebHostBuilder(webHostBuilder => {
 				webHostBuilder.ConfigureServices(services => {
 					services.AddMvc().AddNewtonsoftJson().AddFluentValidation(fv => {
-						fv.ImplicitlyValidateChildProperties = false;
 					});
 					services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 					services.AddScoped<IValidator<ParentModel>, InjectsExplicitChildValidator>();

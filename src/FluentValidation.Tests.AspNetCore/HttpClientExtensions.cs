@@ -51,42 +51,4 @@ public static class HttpClientExtensions {
 		return JsonConvert.DeserializeObject<List<SimpleError>>(response);
 	}
 
-	public static async Task<XDocument> GetClientsideMessages(this HttpClient client, string action = "/Clientside/Inputs") {
-		var output = await client.GetResponse(action);
-		return XDocument.Parse(output);
-	}
-
-	public static async Task<string> GetClientsideMessage(this HttpClient client, string name, string attribute) {
-		var doc = await client.GetClientsideMessages();
-		var elem = doc.Root.Elements("input")
-			.Where(x => x.Attribute("name").Value == name).SingleOrDefault();
-
-		if (elem == null) {
-			throw new Exception("Could not find element with name " + name);
-		}
-
-		var attr = elem.Attribute(attribute);
-
-		if (attr == null || string.IsNullOrEmpty(attr.Value)) {
-			throw new Exception("Could not find attr " + attribute);
-		}
-
-		return attr.Value;
-	}
-
-	public static async Task<string[]> RunRulesetAction(this HttpClient client, string action, string modelPrefix = null) {
-
-		var doc = await client.GetClientsideMessages(action);
-
-		var elems = doc.Root.Elements("input")
-			.Where(x => x.Attribute("name").Value.StartsWith($"{(modelPrefix == null ? string.Empty : $"{modelPrefix}.")}CustomName"));
-
-		var results = elems.Select(x => x.Attribute("data-val-required"))
-			.Where(x => x != null)
-			.Select(x => x.Value)
-			.ToArray();
-
-		return results;
-	}
-
 }

@@ -81,7 +81,6 @@ public class RazorPagesTestsWithImplicitValidationEnabled : IClassFixture<WebApp
 		_client = _client = webApp.CreateClientWithServices(services => {
 #pragma warning disable CS0618
 			services.AddMvc().AddNewtonsoftJson().AddFluentValidation(fv => {
-				fv.ImplicitlyValidateChildProperties = true;
 			});
 #pragma warning restore CS0618
 			services.AddScoped<IValidator<TestModel>, TestModelValidator>();
