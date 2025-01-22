@@ -36,6 +36,11 @@ Full release notes can be found at https://github.com/FluentValidation/FluentVal
     <PackageValidationBaselineVersion>11.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
@@ -47,7 +52,6 @@ Full release notes can be found at https://github.com/FluentValidation/FluentVal
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
     <None Include="..\..\logo\fluent-validation-icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
