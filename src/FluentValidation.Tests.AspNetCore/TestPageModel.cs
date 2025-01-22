@@ -80,47 +80,29 @@ namespace FluentValidation.Tests {
 	[IgnoreAntiforgeryToken(Order = 1001)]
 	public class TestPageModelWithDefaultRuleSet : PageModel {
 
-		[BindProperty(Name = "Test")]
-		public ClientsideRulesetModel Test { get; set; }
-
 		public IActionResult OnGet() => Page();
 	}
 
 	[IgnoreAntiforgeryToken(Order = 1001)]
-	[RuleSetForClientSideMessages("Foo")]
 	public class TestPageModelWithSpecifiedRuleSet : PageModel {
 
-		[BindProperty(Name = "Test")]
-		public ClientsideRulesetModel Test { get; set; }
-
 		public IActionResult OnGet() => Page();
 	}
 
 	[IgnoreAntiforgeryToken(Order = 1001)]
-	[RuleSetForClientSideMessages("Foo", "Bar")]
 	public class TestPageModelWithMultipleRuleSets : PageModel {
 
-		[BindProperty(Name = "Test")]
-		public ClientsideRulesetModel Test { get; set; }
-
 		public IActionResult OnGet() => Page();
 	}
 
 	[IgnoreAntiforgeryToken(Order = 1001)]
-	[RuleSetForClientSideMessages("Foo", "default")]
 	public class TestPageModelWithDefaultAndSpecifiedRuleSet : PageModel {
-
-		[BindProperty(Name = "Test")]
-		public ClientsideRulesetModel Test { get; set; }
 
 		public IActionResult OnGet() => Page();
 	}
 
 	[IgnoreAntiforgeryToken(Order = 1001)]
 	public class TestPageModelWithRuleSetForHandlers : PageModel {
-
-		[BindProperty(Name = "Test")]
-		public ClientsideRulesetModel Test { get; set; }
 
 		public IActionResult OnGetDefault() => Page();
 
